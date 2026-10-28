@@ -1,0 +1,100 @@
+# Runs the tests on push and PR, and builds the package. On a "v*" tag, publishes the build to PyPI
+# via trusted publishing: https://docs.pypi.org/trusted-publishers/
+
+name: tests
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: ${{ matrix.platform }} ${{ matrix.python-version }} ${{ matrix.resolution }}
+    runs-on: ${{ matrix.platform }}
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ["3.10", "3.14"]
+        resolution: [highest]
+        include:
+          # the oldest napari and pytest that pyproject.toml allows; that napari has no pyqt6 extra
+          - platform: ubuntu-latest
+            python-version: "3.10"
+            resolution: lowest-direct
+            qt: pyqt5==5.15.11
+
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0  # setuptools_scm needs the tag history for the version
+          persist-credentials: false
+
+      - uses: astral-sh/setup-uv@v10.3.3
+        with:
+          python-version: ${{ matrix.python-version }}
+          activate-environment: true
+
+      # QtGui, which scales large PNG icons, needs the system's GL and xcb libraries
+      - uses: tlambert03/setup-qt-libs@v1.8
+
+      - name: Install
+        run: uv pip install --resolution ${{ matrix.resolution }} -e . --group dev ${{ matrix.qt }}
+
+      # under a virtual display on Linux, so tests/test_run_shortcut.py can start napari there too
+      - name: Test
+        uses: aganders3/headless-gui@v2.2
+        with:
+          run: pytest -v --color=yes
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: astral-sh/setup-uv@v10.3.3
+
+      - name: Build
+        run: uv build
+
+      - name: Check the package metadata
+        run: uvx twine check --strict dist/*
+
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: dist
+          path: dist/
+
+  publish:
+    needs: [test, build]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/napari-launcher
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v8.0.2
+        with:
+          name: dist
+          path: dist/
+
+      - uses: pypa/gh-action-pypi-publish@v1.14.3

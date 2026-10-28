@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=77", "setuptools_scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "napari-launcher"
+description = "Start napari with a plugin's widgets docked, from the command line or a desktop shortcut"
+readme = "README.md"
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Jesko Wagner", email = "35219306+jeskowagner@users.noreply.github.com" },
+]
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+]
+dependencies = ["napari>=0.4.19"]
+dynamic = ["version"]
+
+[project.scripts]
+napari-launcher = "napari_launcher.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/jeskowagner/napari-launcher"
+"Source Code" = "https://github.com/jeskowagner/napari-launcher"
+"Bug Tracker" = "https://github.com/jeskowagner/napari-launcher/issues"
+
+[dependency-groups]
+dev = ["pytest>=8", "napari[pyqt6]"]
+
+[tool.setuptools_scm]
+version_file = "napari_launcher/_version.py"
+fallback_version = "0.0.0"
+
+[tool.setuptools.packages.find]
+include = ["napari_launcher*"]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.format]
+quote-style = "single"
