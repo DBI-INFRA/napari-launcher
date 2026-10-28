@@ -108,7 +108,7 @@ def _shrink(data):
         from qtpy.QtGui import QImage
     except ImportError as e:
         raise ValueError(
-            f'the icon is larger than {ICO_MAX} pixels and Qt is not there to scale it; '
+            f'the icon is larger than {ICO_MAX} pixels and Qt is not installed to scale it down; '
             f'give a PNG of at most {ICO_MAX} pixels or an .ico'
         ) from e
     image = QImage.fromData(data, 'PNG').scaled(
@@ -122,7 +122,7 @@ def _shrink(data):
 
 
 def png_to_ico(data):
-    """an .ico holding one PNG image, which Windows reads since Vista"""
+    """an .ico holding one PNG image, a format Windows has read since Vista"""
     width, height = _png_size(data)
     if max(width, height) > ICO_MAX:
         data = _shrink(data)

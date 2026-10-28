@@ -117,7 +117,9 @@ def main(argv=None):
     launch.set_defaults(run=_launch)
 
     shortcut = commands.add_parser(
-        'shortcut', help='add or remove app menu and desktop shortcuts', description='app menu and desktop shortcuts'
+        'shortcut',
+        help='add or remove app menu and desktop shortcuts',
+        description='add or remove app menu and desktop shortcuts',
     )
     actions = shortcut.add_subparsers(dest='action', required=True, metavar='ACTION')
 

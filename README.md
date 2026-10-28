@@ -27,7 +27,8 @@ To remove the shortcut:
 napari-launcher shortcut remove -w napari-animation
 ```
 
-A shortcut runs the Python it was made with. Remove the shortcut before you delete the environment.
+A shortcut runs the Python it was made with. Remove the shortcut before you uninstall
+napari-launcher or delete the environment.
 
 ## Choose the widgets
 
@@ -44,9 +45,9 @@ A shortcut runs the Python it was made with. Remove the shortcut before you dele
 
 Before it makes a shortcut, `shortcut add` checks these names. It asks the Python environment the
 shortcut will use which plugins and widgets it has. If a plugin is not installed, has no widgets, or
-has no widget of that name, `shortcut add` stops with an error that lists the names that would
-work. The check only knows npe2 plugins. To skip it, pass `--no-check`. This is useful before the
-plugin is installed, or for an older npe1 plugin.
+has no widget of that name, `shortcut add` stops with an error. For a wrong name, the error lists
+the names that would work. The check only knows npe2 plugins. To skip it, pass `--no-check`, for
+example before the plugin is installed or for an older npe1 plugin.
 
 ## Commands
 
@@ -100,7 +101,7 @@ mark, `shortcut add` and `shortcut remove` stop with an error and change nothing
 
 ## Platform notes
 
-**Windows.** Shortcuts go in the Start menu and on the desktop, also when the desktop is in
+**Windows.** Shortcuts go in the Start menu and on the desktop, even when the desktop is in
 OneDrive. They start napari with `pythonw.exe`, so no console window opens. Without a console,
 napari-launcher writes its output to `%LOCALAPPDATA%\napari-launcher\logs\launch.log`, and replaces
 the file each time. If napari then fails to start, a dialog shows the error. If PyTorch is
@@ -114,11 +115,11 @@ Dock and Launchpad show one app.
 **Linux.** The app menu entry is a `.desktop` file in `~/.local/share/applications`, or in
 `$XDG_DATA_HOME/applications` if that is set. The desktop shortcut goes in the desktop folder set in
 `~/.config/user-dirs.dirs`, or in `$XDG_CONFIG_HOME/user-dirs.dirs` if `XDG_CONFIG_HOME` is set.
-If that file does not set a desktop folder, the shortcut goes in `~/Desktop`. napari-launcher does not create this
-folder. If it does not exist, you only get the app menu entry. On GNOME, the desktop shortcut is
-marked as trusted so it can start. Icons are kept in `~/.local/share/napari-launcher/icons`. If
-napari-launcher starts without a console, its output goes to
-`~/.local/share/napari-launcher/logs/launch.log`.
+If that file does not set a desktop folder, the shortcut goes in `~/Desktop`. napari-launcher does
+not create this folder. If it does not exist, you only get the app menu entry. On GNOME, the
+desktop shortcut is marked as trusted so it can start. Icons are kept in
+`~/.local/share/napari-launcher/icons`. If napari-launcher starts without a console, its output
+goes to `~/.local/share/napari-launcher/logs/launch.log`.
 
 ## Python API
 
