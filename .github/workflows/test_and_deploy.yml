@@ -52,6 +52,15 @@ jobs:
       # QtGui, which scales large PNG icons, needs the system's GL and xcb libraries
       - uses: tlambert03/setup-qt-libs@v1.8
 
+      # the OpenGL of the Windows runners is too old for napari; this swaps in Mesa's software renderer
+      - name: Install Windows OpenGL
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $script = Join-Path $env:RUNNER_TEMP install_opengl.ps1
+          Invoke-WebRequest -OutFile $script https://raw.githubusercontent.com/pyvista/gl-ci-helpers/d1c3a005634166a4acee81e8e0446e528ffbd0a9/appveyor/install_opengl.ps1
+          powershell -File $script
+
       - name: Install
         run: uv pip install --resolution ${{ matrix.resolution }} -e . --group dev ${{ matrix.qt }}
 
