@@ -8,6 +8,14 @@ changes.
 Requirements: Windows, macOS or Linux, Python 3.10 or later, and napari 0.4.19 or later with a Qt
 binding such as PyQt6.
 
+## Who it is for
+
+- **napari users** who open napari mostly for one plugin. Instead of starting napari and finding the
+  widget in the Plugins menu every time, you click a shortcut and the widget is already there.
+- **Plugin developers** who want to give their users such a shortcut, or add one from an installer.
+  [napari-installer-template](https://github.com/jeskowagner/napari-installer-template) uses
+  napari-launcher for its shortcuts.
+
 ## Add a shortcut
 
 Install napari-launcher in the environment that has napari and the plugin. If you use conda,
