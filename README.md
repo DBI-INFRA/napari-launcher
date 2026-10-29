@@ -13,7 +13,7 @@ binding such as PyQt6.
 - **napari users** who open napari mostly for one plugin. Instead of starting napari and finding the
   widget in the Plugins menu every time, you click a shortcut and the widget is already there.
 - **Plugin developers** who want to give their users such a shortcut, or add one from an installer.
-  [napari-installer-template](https://github.com/jeskowagner/napari-installer-template) uses
+  [napari-installer-template](https://github.com/DBI-INFRA/napari-installer-template) uses
   napari-launcher for its shortcuts.
 
 ## Add a shortcut
